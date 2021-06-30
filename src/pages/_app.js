@@ -1,8 +1,22 @@
-import '../styles/globals.css'
-import 'tailwindcss/tailwind.css'
+import "../styles/globals.css";
+import "tailwindcss/tailwind.css";
+import Head from "next/head";
 
 const MyApp = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />
-}
+  return (
+    <>
+      <Head>
+        <title>JsonPlaceHolder Album</title>
+        <meta
+          name="description"
+          content="Fetch data from jsonplaceholder album"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-export default MyApp
+      <Component {...pageProps} />
+    </>
+  );
+};
+
+export default MyApp;
