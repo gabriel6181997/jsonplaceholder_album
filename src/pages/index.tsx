@@ -1,11 +1,27 @@
+import { useCallback, useState } from "react";
+
 const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const Home = () => {
+  const [selectOption, setSelectOption] = useState(1);
+
+  const handleSelectOption = useCallback((e) => {
+    setSelectOption(e.target.value);
+  }, []);
+
+  const handleClick = useCallback(() => {
+    console.log(selectOption);
+  }, [selectOption]);
+
   return (
     <div className="max-w-screen-md mt-20 mx-auto text-center">
       <h1 className="text-2xl font-bold">Choose an Album</h1>
       <div className="mt-10">
-        <select>
+        <select
+          value={selectOption}
+          className="pr-5 pl-2 border-blue-300 border-2"
+          onChange={handleSelectOption}
+        >
           {OPTIONS.map((option) => {
             return (
               <option key={option} value={option}>
@@ -14,7 +30,12 @@ const Home = () => {
             );
           })}
         </select>
-        <button className="ml-6">Enter</button>
+        <button
+          className="ml-6 px-3 py-1 border-blue-300 border-2 rounded-full"
+          onClick={handleClick}
+        >
+          Enter
+        </button>
       </div>
     </div>
   );
