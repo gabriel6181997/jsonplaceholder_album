@@ -2,11 +2,11 @@ import { MiniPhoto } from "src/components/MiniPhoto";
 import { useRouter } from "next/router";
 import ReactLoading from "react-loading";
 import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from "next";
-import { ALBUM } from "src/utils/type";
+import { PHOTO } from "src/utils/type";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/photos`);
-  const albums: ALBUM[] = await res.json();
+  const albums: PHOTO[] = await res.json();
 
   const paths = albums.map((album) => {
     return {
@@ -62,7 +62,7 @@ const Album = (album: InferGetStaticPropsType<typeof getStaticProps>) => {
     <div className="max-w-screen-md mt-20 mx-auto text-center mb-10">
       <h1 className="text-2xl font-bold">Choose a Photo</h1>
       <ul className="mt-10 flex flex-wrap justify-center gap-5">
-        {album.album.map((photo) => {
+        {album.album.map((photo: PHOTO) => {
           return (
             <MiniPhoto
               key={photo.id}
