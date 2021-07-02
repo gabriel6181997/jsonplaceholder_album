@@ -68,6 +68,9 @@ const Album = (album: InferGetStaticPropsType<typeof getStaticProps>) => {
         {album.album.map((photo: PHOTO) => {
           return (
             <MiniPhoto
+              href={`/${encodeURIComponent(photo.albumId)}/${encodeURIComponent(
+                photo.id
+              )}`}
               key={photo.id}
               src={photo.thumbnailUrl}
               title={photo.title}
