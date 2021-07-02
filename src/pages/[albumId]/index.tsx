@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 const Album = (album: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-  const {albumId} = router.query;
+  const { albumId } = router.query;
 
   if (router.isFallback) {
     return (
@@ -61,7 +61,9 @@ const Album = (album: InferGetStaticPropsType<typeof getStaticProps>) => {
 
   return (
     <div className="max-w-screen-md mt-20 mx-auto text-center mb-10">
-      <h1 className="text-2xl font-bold">Choose a Photo from Album {albumId}</h1>
+      <h1 className="text-2xl font-bold">
+        Choose a Photo from Album {albumId}
+      </h1>
       <ul className="mt-10 flex flex-wrap justify-center gap-5">
         {album.album.map((photo: PHOTO) => {
           return (
