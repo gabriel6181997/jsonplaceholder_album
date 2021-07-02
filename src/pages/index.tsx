@@ -1,17 +1,22 @@
 import { useCallback, useState } from "react";
+import { useRouter } from 'next/router'
 
 const OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const Home = () => {
   const [selectOption, setSelectOption] = useState(1);
+  const router = useRouter();
 
   const handleSelectOption = useCallback((e) => {
     setSelectOption(e.target.value);
   }, []);
 
   const handleClick = useCallback(() => {
-    console.log(selectOption);
-  }, [selectOption]);
+    router.push({
+      pathname: '/albumId/[albumId]',
+      query: { albumId: selectOption },
+    })
+  }, [selectOption, router]);
 
   return (
     <div className="max-w-screen-md mt-20 mx-auto text-center">
