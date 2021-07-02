@@ -1,9 +1,12 @@
 import { MiniPhoto } from "src/components/MiniPhoto";
 import { useRouter } from "next/router";
+import ReactLoading from "react-loading";
+import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from "next";
+import { ALBUM } from "src/utils/type";
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const res = await fetch(`https://jsonplaceholder.typicode.com/photos`);
-  const albums = await res.json();
+  const albums: ALBUM[] = await res.json();
 
   const paths = albums.map((album) => {
     return {
@@ -19,46 +22,55 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const id = params.albumId;
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/photos?albumId=${id}`
   );
   const album = await res.json();
 
+  if (!album) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: { album },
-    revalidate: 60 * 60,
+    revalidate: 30,
   };
 };
 
-const Album = (album) => {
+const Album = (album: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-  const albumArray = Object.entries(album)
-  console.log(albumArray);
 
-
-  // If the page is not yet generated, this will be displayed
-  // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div>Loading...</div>;
+    return (
+      <div className="max-w-screen-md mt-20 mx-auto text-center mb-10">
+        <div className="text-center w-28 mx-auto">
+          <ReactLoading type="spin" color="#60A5FA" height={100} width={100} />
+        </div>
+        <p className="mt-5 font-bold">Loading...</p>
+      </div>
+    );
   }
 
   return (
     <div className="max-w-screen-md mt-20 mx-auto text-center mb-10">
       <h1 className="text-2xl font-bold">Choose a Photo</h1>
-      <ul className="mt-10 flex flex-wrap gap-5">
-
-        {/* {Object.keys(album).map(photo => {
+      <ul className="mt-10 flex flex-wrap justify-center gap-5">
+        {album.album.map((photo) => {
           return (
             <MiniPhoto
-              key={album[photo].id}
-              src={album[photo].thumbnailUrl}
-              title={album[photo].title}
+              key={photo.id}
+              src={photo.thumbnailUrl}
+              title={photo.title}
             />
           );
-        })} */}
-
+        })}
       </ul>
     </div>
   );
