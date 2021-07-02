@@ -13,7 +13,7 @@ const Home = () => {
 
   const handleClick = useCallback(() => {
     router.push({
-      pathname: '/albumId/[albumId]',
+      pathname: '/[albumId]',
       query: { albumId: selectOption },
     })
   }, [selectOption, router]);
